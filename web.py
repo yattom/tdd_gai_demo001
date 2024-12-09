@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from uuid import uuid4
 from tcg import Game, GameSetting
 
 app = Flask(__name__)
+CORS(app)
 sessions = {}
 
 @app.route('/game/start', methods=['POST'])
@@ -33,7 +35,7 @@ def play_card(session_id):
     if not game:
         return jsonify({"error": "Invalid session ID"}), 404
     try:
-        game.play(data['player'], data['card_index'])
+        game.play(data['player'], data['cardIndex'])
         new_state = {
             "turn_no": game.current_turn_no,
             "current_player": game.get_turn()['player'],
